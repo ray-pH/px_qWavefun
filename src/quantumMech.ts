@@ -86,9 +86,11 @@ class QParticle {
             let i_dx2   = 1/(this.dx * this.dx);
             let res     = new Float64Array(Psi.length);
 
+            let ire : number; 
+            let iim : number;
             // center
             for (let i = 1; i < halflength-1; i++){
-                let ire = i; let iim = halflength + ire;
+                ire = i; iim = halflength + ire;
 
                 let DDre = (Psi[ire+1] - 2*Psi[ire] + Psi[ire-1]) * i_dx2;
                 let DDim = (Psi[iim+1] - 2*Psi[iim] + Psi[iim-1]) * i_dx2;
@@ -96,26 +98,15 @@ class QParticle {
                 res[ire] = (-0.5/this.m * DDim) + (this.V[ire] * Psi[iim]);
                 res[iim] = ( 0.5/this.m * DDre) - (this.V[ire] * Psi[ire]);
             }
-            // left (forward)
-            {
-                let ire = 0; let iim = halflength + ire;
+            // extrapolate boundary
+            ire = 0; iim = halflength + ire; // left
+            res[ire] = res[ire+1];
+            res[iim] = res[iim+1];
 
-                let DDre = (Psi[ire+2] - 2*Psi[ire+1] + Psi[ire]) * i_dx2;
-                let DDim = (Psi[iim+2] - 2*Psi[iim+1] + Psi[iim]) * i_dx2;
+            ire = halflength-1; iim = halflength + ire; //right
+            res[ire] = res[ire-1];
+            res[iim] = res[iim-1];
 
-                res[ire] = (-0.5/this.m * DDim) + (this.V[ire] * Psi[iim]);
-                res[iim] = ( 0.5/this.m * DDre) - (this.V[ire] * Psi[ire]);
-            }
-            // right (backward)
-            {
-                let ire = halflength-1; let iim = halflength + ire;
-
-                let DDre = (Psi[ire] - 2*Psi[ire-1] + Psi[ire-2]) * i_dx2;
-                let DDim = (Psi[iim] - 2*Psi[iim-1] + Psi[iim-2]) * i_dx2;
-
-                res[ire] = (-0.5/this.m * DDim) + (this.V[ire] * Psi[iim]);
-                res[iim] = ( 0.5/this.m * DDre) - (this.V[ire] * Psi[ire]);
-            }
             return res;
         }
         return fun;
