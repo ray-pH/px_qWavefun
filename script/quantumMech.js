@@ -1,5 +1,6 @@
 import { arr_concat } from "./utils/arr64.js";
-import { step_RK4 } from "./utils/solver64.js";
+import { step_heun } from "./utils/solver64.js";
+import { hex2rgb } from "./utils/color.js";
 class WaveFunction {
     constructor(n) {
         this.n = n;
@@ -68,7 +69,7 @@ class QParticle {
     stepSchrodinger() {
         let halflength = this.n;
         let X = arr_concat(this.Psi.real, this.Psi.imag);
-        let Xn = step_RK4(this.funSchrodinger, 0, X, this.dt);
+        let Xn = step_heun(this.funSchrodinger, 0, X, this.dt);
         this.Psi.setReal(Xn.slice(0, halflength));
         this.Psi.setImag(Xn.slice(halflength));
     }
@@ -86,8 +87,8 @@ class QRenderer {
         this.ctx.imageSmoothingEnabled = false; // -> nearest-neighbor interpolation
         // temp canvas to store original values
         this.data_canvas = document.createElement('canvas');
-        this.data_canvas.width = qm.n;
-        this.data_canvas.height = 100;
+        this.data_canvas.width = this.xres;
+        this.data_canvas.height = this.yres;
         this.data_ctx = this.data_canvas.getContext('2d');
         this.data_img_data = this.data_ctx.getImageData(0, 0, this.data_canvas.width, this.data_canvas.height);
         this.data_pixels = this.data_img_data.data;
@@ -96,12 +97,11 @@ class QRenderer {
         this.data_pixels.fill(255);
     }
     drawProb() {
-        this.clearImgdata();
         let probs = this.qm.Psi.getProbabilityArray();
         let cj = this.yres / 2;
-        let color = [0, 0, 255, 255];
+        let color = hex2rgb(0x2E2E2E); //#2E2E2E
         for (let i = 0; i < this.qm.n; i++) {
-            let jprob = probs[i] * this.yres / 2;
+            let jprob = Math.round(probs[i] * this.yres / 2);
             for (let j = 0; j < jprob; j++) {
                 var ptr = 4 * (i + (cj - j) * this.xres);
                 this.data_pixels[ptr + 0] = color[0];
@@ -110,6 +110,25 @@ class QRenderer {
                 this.data_pixels[ptr + 3] = color[3];
             }
         }
+    }
+    drawComponent(comp, color, width = 4) {
+        let cj = this.yres / 2;
+        for (let i = 0; i < this.qm.n; i++) {
+            let jprob = Math.round(comp[i] * this.yres / 2);
+            for (let j = jprob - width; j < jprob; j++) {
+                var ptr = 4 * (i + (cj - j) * this.xres);
+                this.data_pixels[ptr + 0] = color[0];
+                this.data_pixels[ptr + 1] = color[1];
+                this.data_pixels[ptr + 2] = color[2];
+                this.data_pixels[ptr + 3] = color[3];
+            }
+        }
+    }
+    draw() {
+        this.clearImgdata();
+        this.drawProb();
+        this.drawComponent(this.qm.Psi.real, hex2rgb(0x3477EB)); // #3477eb
+        this.drawComponent(this.qm.Psi.imag, hex2rgb(0xE81570)); // #e81570
         // put data into temp_canvas
         this.data_ctx.putImageData(this.data_img_data, 0, 0);
         // draw into original canvas
