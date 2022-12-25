@@ -12,7 +12,6 @@ for (let i = 0; i < n; i++) {
     let x = i / n;
     potentArr[i] = n * n * (x - 0.5) * (x - 0.5);
 }
-console.log(potentArr);
 var realArr = new Float64Array(n);
 var imagArr = new Float64Array(n);
 var sinusoidscale = 40;
@@ -27,7 +26,7 @@ qparticle.Psi.setReal(realArr);
 qparticle.Psi.setImag(imagArr);
 qparticle.Psi.setPeak(0.8);
 qparticle.setPotential(potentArr);
-console.log(qparticle.V);
+qrenderer.setVjmax(0.8);
 var paused = false;
 var n_iter = 10;
 function loop() {

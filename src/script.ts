@@ -32,6 +32,7 @@ qparticle.Psi.setReal(realArr);
 qparticle.Psi.setImag(imagArr);
 qparticle.Psi.setPeak(0.8);
 qparticle.setPotential(potentArr);
+qrenderer.setVjmax(0.8);
 
 var paused = false;
 var n_iter = 10;

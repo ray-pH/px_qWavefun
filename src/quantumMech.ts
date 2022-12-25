@@ -140,6 +140,9 @@ class QRenderer {
 
     xres   : number;
     yres   : number;
+    Vjmax  : number = 0.0;
+    Vscale : number = 1.0;
+    Vdynamic : boolean = false; // flag, whether V changes over time
 
     data_canvas   : HTMLCanvasElement;
     data_ctx      : CanvasRenderingContext2D;
@@ -167,8 +170,17 @@ class QRenderer {
         this.data_pixels   = this.data_img_data.data;
     }
 
-    clearImgdata(){
-        this.data_pixels.fill(255);
+    clearImgdata(){ this.data_pixels.fill(255); }
+    setVdynamic(Vd : boolean){ this.Vdynamic = Vd; }
+    calcVscale(){
+        let Vmax = Math.max(...this.qm.V);
+        let Vmin = Math.max(...this.qm.V);
+        let peak0 = Math.max(Math.abs(Vmax), Math.abs(Vmin));
+        this.Vscale = this.Vjmax/peak0;
+    }
+    setVjmax(Vj : number) { 
+        this.Vjmax = Vj; 
+        this.calcVscale();
     }
 
     drawProb(color : number[]){
@@ -201,11 +213,14 @@ class QRenderer {
     }
 
     drawPotential(color : number[]){
+        if (this.Vdynamic) this.calcVscale;
         let potent = this.qm.V;
         let cj    = this.yres/2;
         for (let i = 0; i < this.qm.n; i++){
-            let jpotent = Math.round(potent[i] * this.yres/2);
-            for (let j = 0; j < Math.min(jpotent, this.yres); j++){
+            let jpotent = Math.round(potent[i] * this.Vscale * this.yres/2);
+            let jfrom   = -this.yres/2;
+            let jto     = Math.min(jpotent, this.yres/2);
+            for (let j = jfrom; j < jto; j++){
                 var ptr = 4 * (i + (cj - j) * this.xres );
                 this.data_pixels[ptr+0] = color[0];
                 this.data_pixels[ptr+1] = color[1];

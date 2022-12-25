@@ -76,6 +76,8 @@ class QParticle {
                 let DDim = (Psi[iim + 2] - 2 * Psi[iim + 1] + Psi[iim]) * i_dx2;
                 res[ire] = (-0.5 / this.m * DDim) + (this.V[ire] * Psi[iim]);
                 res[iim] = (0.5 / this.m * DDre) - (this.V[ire] * Psi[ire]);
+                res[ire] = res[ire+1];
+                res[iim] = res[iim+1];
             }
             // right (backward)
             {
@@ -85,6 +87,8 @@ class QParticle {
                 let DDim = (Psi[iim] - 2 * Psi[iim - 1] + Psi[iim - 2]) * i_dx2;
                 res[ire] = (-0.5 / this.m * DDim) + (this.V[ire] * Psi[iim]);
                 res[iim] = (0.5 / this.m * DDre) - (this.V[ire] * Psi[ire]);
+                res[ire] = res[ire-1];
+                res[iim] = res[iim-1];
             }
             return res;
         };
@@ -100,6 +104,9 @@ class QParticle {
 }
 class QRenderer {
     constructor(qm, canvas, yres = 200) {
+        this.Vjmax = 0.0;
+        this.Vscale = 1.0;
+        this.Vdynamic = false; // flag, whether V changes over time
         this.qm = qm;
         this.ctx = canvas.getContext('2d');
         this.width = canvas.width;
@@ -117,8 +124,17 @@ class QRenderer {
         this.data_img_data = this.data_ctx.getImageData(0, 0, this.data_canvas.width, this.data_canvas.height);
         this.data_pixels = this.data_img_data.data;
     }
-    clearImgdata() {
-        this.data_pixels.fill(255);
+    clearImgdata() { this.data_pixels.fill(255); }
+    setVdynamic(Vd) { this.Vdynamic = Vd; }
+    calcVscale() {
+        let Vmax = Math.max(...this.qm.V);
+        let Vmin = Math.max(...this.qm.V);
+        let peak0 = Math.max(Math.abs(Vmax), Math.abs(Vmin));
+        this.Vscale = this.Vjmax / peak0;
+    }
+    setVjmax(Vj) {
+        this.Vjmax = Vj;
+        this.calcVscale();
     }
     drawProb(color) {
         let probs = this.qm.Psi.getProbabilityArray();
@@ -148,11 +164,16 @@ class QRenderer {
         }
     }
     drawPotential(color) {
+        if (this.Vdynamic)
+            this.calcVscale;
         let potent = this.qm.V;
         let cj = this.yres / 2;
         for (let i = 0; i < this.qm.n; i++) {
-            let jpotent = Math.round(potent[i] * this.yres / 2);
-            for (let j = 0; j < Math.min(jpotent, this.yres); j++) {
+            let jpotent = Math.round(potent[i] * this.yres / 2 * this.Vscale);
+            // let jpotent = Math.round(potent[i] * this.yres / 2);
+            let jfrom = -this.yres / 2;
+            let jto = Math.min(jpotent, this.yres / 2);
+            for (let j = jfrom; j < jto; j++) {
                 var ptr = 4 * (i + (cj - j) * this.xres);
                 this.data_pixels[ptr + 0] = color[0];
                 this.data_pixels[ptr + 1] = color[1];
