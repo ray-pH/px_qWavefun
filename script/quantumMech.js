@@ -50,6 +50,9 @@ class QParticle {
         this.V = new Float64Array(n);
         this.funSchrodinger = this.genFunSchrodinger();
     }
+    setPotential(V) {
+        this.V.set(V);
+    }
     // type diffFun = (t : number, arr : Float64Array) => Float64Array;
     genFunSchrodinger() {
         let fun = (_t, Psi) => {
@@ -117,10 +120,9 @@ class QRenderer {
     clearImgdata() {
         this.data_pixels.fill(255);
     }
-    drawProb() {
+    drawProb(color) {
         let probs = this.qm.Psi.getProbabilityArray();
         let cj = this.yres / 2;
-        let color = hex2rgb(0x2E2E2E); //#2E2E2E
         for (let i = 0; i < this.qm.n; i++) {
             let jprob = Math.round(probs[i] * this.yres / 2);
             for (let j = 0; j < jprob; j++) {
@@ -145,9 +147,24 @@ class QRenderer {
             }
         }
     }
+    drawPotential(color) {
+        let potent = this.qm.V;
+        let cj = this.yres / 2;
+        for (let i = 0; i < this.qm.n; i++) {
+            let jpotent = Math.round(potent[i] * this.yres / 2);
+            for (let j = 0; j < Math.min(jpotent, this.yres); j++) {
+                var ptr = 4 * (i + (cj - j) * this.xres);
+                this.data_pixels[ptr + 0] = color[0];
+                this.data_pixels[ptr + 1] = color[1];
+                this.data_pixels[ptr + 2] = color[2];
+                this.data_pixels[ptr + 3] = color[3];
+            }
+        }
+    }
     draw() {
         this.clearImgdata();
-        this.drawProb();
+        this.drawPotential(hex2rgb(0xBBBBBB)); //#BBBBBB
+        this.drawProb(hex2rgb(0x2E2E2E)); //#2E2E2E
         this.drawComponent(this.qm.Psi.real, hex2rgb(0x3477EB)); // #3477eb
         this.drawComponent(this.qm.Psi.imag, hex2rgb(0xE81570)); // #e81570
         // put data into temp_canvas
