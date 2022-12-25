@@ -29,6 +29,29 @@ class WaveFunction {
         this.updateProbabilityArray();
         return this.prob;
     }
+
+    // ∫ ψψ* dx = ∫ |ψ|² dx = 1
+    // if   ∫ |ψ'|² dx = C
+    // then ∫ |ψ'/sqrt(C)|² dx = 1
+    // normalize() : void {
+    //     let dx = 1.0/this.n;
+    //     let integral_dx = 0;
+    //     for (let i = 0; i < this.n; i++){
+    //         let re = this.real[i];
+    //         let im = this.imag[i];
+    //         integral_dx += re*re + im*im
+    //     }
+    //     let integral = integral_dx * dx;
+    // }
+
+    setPeak(peak : number){
+        let maxim = Math.max(...this.real,...this.imag);
+        let minim = Math.min(...this.real,...this.imag);
+        let peak0 = Math.max(Math.abs(maxim), Math.abs(minim));
+        let scale = peak/peak0;
+        this.real = arr_scale(scale, this.real);
+        this.imag = arr_scale(scale, this.imag);
+    }
 }
 
 class QParticle {
