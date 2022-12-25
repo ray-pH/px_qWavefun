@@ -133,7 +133,10 @@ class QRenderer {
     yres   : number;
     Vjmax  : number = 0.0;
     Vscale : number = 1.0;
-    Vdynamic : boolean = false; // flag, whether V changes over time
+    waveScale : number = 1.0;
+    Vdynamic  : boolean = false; // flag, whether V changes over time
+
+    option_drawBottomPot : boolean = true;
 
     data_canvas   : HTMLCanvasElement;
     data_ctx      : CanvasRenderingContext2D;
@@ -163,6 +166,7 @@ class QRenderer {
 
     clearImgdata(){ this.data_pixels.fill(255); }
     setVdynamic(Vd : boolean){ this.Vdynamic = Vd; }
+    setWavescale(Ws : number){ this.waveScale = Ws; }
     calcVscale(){
         let Vmax = Math.max(...this.qm.V);
         let Vmin = Math.max(...this.qm.V);
@@ -192,7 +196,7 @@ class QRenderer {
     drawComponent(comp : Float64Array, color : number[], width : number = 4){
         let cj    = this.yres/2;
         for (let i = 0; i < this.qm.n; i++){
-            let jprob = Math.round(comp[i] * this.yres/2);
+            let jprob = Math.round(comp[i] * this.waveScale * this.yres/2);
             for (let j = jprob-width; j < jprob; j++){
                 var ptr = 4 * (i + (cj - j) * this.xres );
                 this.data_pixels[ptr+0] = color[0];
@@ -209,7 +213,7 @@ class QRenderer {
         let cj    = this.yres/2;
         for (let i = 0; i < this.qm.n; i++){
             let jpotent = Math.round(potent[i] * this.Vscale * this.yres/2);
-            let jfrom   = -this.yres/2;
+            let jfrom   = (this.option_drawBottomPot) ? -this.yres/2 : 0;
             let jto     = Math.min(jpotent, this.yres/2);
             for (let j = jfrom; j < jto; j++){
                 var ptr = 4 * (i + (cj - j) * this.xres );
