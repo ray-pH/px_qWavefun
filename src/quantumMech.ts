@@ -142,14 +142,14 @@ class QRenderer {
     data_img_data : ImageData;
     data_pixels   : ImageData["data"];
 
-    constructor(qm : QParticle, canvas : HTMLCanvasElement){
+    constructor(qm : QParticle, canvas : HTMLCanvasElement, yres : number = 200){
         this.qm       = qm;
         this.ctx      = canvas.getContext('2d');
         this.width    = canvas.width;
         this.height   = canvas.height;
 
         this.xres  = qm.n;
-        this.yres  = 200;
+        this.yres  = yres;
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.ctx.scale(canvas.width/this.xres, canvas.height/this.yres);
         this.ctx.imageSmoothingEnabled = false; // -> nearest-neighbor interpolation

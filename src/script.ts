@@ -2,20 +2,28 @@ import {QParticle, QRenderer} from "./quantumMech.js"
 
 var canvas : HTMLElement | null = document.getElementById("canvas");
 
-var n  = 100;
+var n  = 200;
 var dt = 1e-6; 
 
 // approximately dψ_re <= 2Δt/Δx^2 = 2Δt n^2
 // to make it stable set at most Δt < δψ/n^2
 //
 var qparticle = new QParticle(n, dt);
-var qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement);
+var qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement, 300);
 
 var realArr = new Float64Array(n);
+var imagArr = new Float64Array(n);
+var sinusoidscale = 400;
 for (let i = 0; i < n; i++){
-    realArr[i] = i/100;
+    let x = i/n;
+    let y = -(x - 0.1)*(x - 0.4);
+    let envelope = Math.max(y,0)
+    realArr[i] = envelope * Math.sin(sinusoidscale * x);
+    imagArr[i] = envelope * Math.cos(sinusoidscale * x);
 }
 qparticle.Psi.setReal(realArr);
+qparticle.Psi.setImag(imagArr);
+qparticle.Psi.setPeak(0.8);
 
 var paused = false;
 var n_iter = 10;

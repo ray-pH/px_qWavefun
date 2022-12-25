@@ -1,4 +1,4 @@
-import { arr_concat } from "./utils/arr64.js";
+import { arr_scale, arr_concat } from "./utils/arr64.js";
 import { step_heun } from "./utils/solver64.js";
 import { hex2rgb } from "./utils/color.js";
 class WaveFunction {
@@ -17,6 +17,27 @@ class WaveFunction {
     getProbabilityArray() {
         this.updateProbabilityArray();
         return this.prob;
+    }
+    // ∫ ψψ* dx = ∫ |ψ|² dx = 1
+    // if   ∫ |ψ'|² dx = C
+    // then ∫ |ψ'/sqrt(C)|² dx = 1
+    // normalize() : void {
+    //     let dx = 1.0/this.n;
+    //     let integral_dx = 0;
+    //     for (let i = 0; i < this.n; i++){
+    //         let re = this.real[i];
+    //         let im = this.imag[i];
+    //         integral_dx += re*re + im*im
+    //     }
+    //     let integral = integral_dx * dx;
+    // }
+    setPeak(peak) {
+        let maxim = Math.max(...this.real, ...this.imag);
+        let minim = Math.min(...this.real, ...this.imag);
+        let peak0 = Math.max(Math.abs(maxim), Math.abs(minim));
+        let scale = peak / peak0;
+        this.real = arr_scale(scale, this.real);
+        this.imag = arr_scale(scale, this.imag);
     }
 }
 class QParticle {
@@ -75,13 +96,13 @@ class QParticle {
     }
 }
 class QRenderer {
-    constructor(qm, canvas) {
+    constructor(qm, canvas, yres = 200) {
         this.qm = qm;
         this.ctx = canvas.getContext('2d');
         this.width = canvas.width;
         this.height = canvas.height;
         this.xres = qm.n;
-        this.yres = 200;
+        this.yres = yres;
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.ctx.scale(canvas.width / this.xres, canvas.height / this.yres);
         this.ctx.imageSmoothingEnabled = false; // -> nearest-neighbor interpolation
