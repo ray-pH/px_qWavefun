@@ -13,41 +13,50 @@
             <a href="">PixelPhysics</a>
             <span class="right">·</span>
         </div>
-        <div class="eq">
-            iħ
-            <div class="frac">
-                <span>∂</span>
-                <span class="bottom">∂t</span>
-            </div>
-            | Ψ &gt; 
-            &nbsp; =
-            &nbsp; [
-            &nbsp;
-            <div class="frac">
-                <span>&nbsp;</span>
-                <span class="bottom">&nbsp;</span>
-            </div>
-            <div class="frac">
-                <span>ħ²</span>
-                <span class="bottom">2m</span>
-            </div> ∇²
-            &nbsp; +
-            &nbsp; V̂
-            &nbsp; ]
-            &nbsp;| Ψ &gt; 
-        </div>
         <br>
-        <div>
-            <div class="canvas-container">
-                <canvas id="canvas" width="500" height="500"></canvas>
+        <div class="main">
+            <div class="left-main">
+                <div class="canvas-container">
+                    <canvas id="canvas" width="500" height="500"></canvas>
+                </div>
+                <div class="legend">
+                    <span style="color: #bbbbbb">V</span><br>
+                    <span style="color: #2e2e2e">P = |Ψ| ²</span><br>
+                    <span style="color: #3477eb">Re(Ψ)</span><br>
+                    <span style="color: #e81570">Im(Ψ)</span><br>
+                <button id="button_toggle_play">pause</button>
+                </div>
             </div>
-            <div class="legend">
-                <span style="color: #bbbbbb">V</span><br>
-                <span style="color: #2e2e2e">P = |Ψ| ²</span><br>
-                <span style="color: #3477eb">Re(Ψ)</span><br>
-                <span style="color: #e81570">Im(Ψ)</span><br>
+            <div class="right-main">
+                <div class="eq">
+                    iħ
+                    <div class="frac">
+                        <span>∂</span>
+                        <span class="bottom">∂t</span>
+                    </div>
+                    | Ψ &gt; 
+                    &nbsp; =
+                    &nbsp; [
+                    &nbsp;
+                    <div class="frac">
+                        <span>&nbsp;</span>
+                        <span class="bottom">&nbsp;</span>
+                    </div>
+                    <div class="frac">
+                        <span>ħ²</span>
+                        <span class="bottom">2m</span>
+                    </div> ∇²
+                    &nbsp; +
+                    &nbsp; V̂
+                    &nbsp; ]
+                    &nbsp;| Ψ &gt; 
+                </div>
+                <label for="select_scene" id="select_scene_label">Scene :</label>
+                <select name="select_scene" id="select_scene">
+                    <option value="0">Parabolic Potential</option>
+                    <option value="1">Quantum Tunneling</option>
+                </select><br>
             </div>
-        </div><br>
-        <button id="button_toggle_play">pause</button>
+        </div>
     </body>
 </html>

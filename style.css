@@ -72,3 +72,35 @@ button{
 .frac span.bottom {
     border-top: 2px solid black;
 }
+
+.legend {
+    display: inline-block;
+    min-width: 65px;
+}
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.right-main{
+    flex-grow: 1;
+    margin-left: 20px;
+    padding: 1em;
+    background-color: #F7F7F7;
+}
+
+#select_scene {
+    font-family: "PixelUniCode";
+    font-size  : 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+/* #select_scene > option { */
+/*     font-family: "PixelUniCode"; */
+/*     font-size  : 16px; */
+/*     font-weight: 400; */
+/*     letter-spacing: 1px; */
+/* } */
+
+
