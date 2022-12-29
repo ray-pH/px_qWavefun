@@ -9,9 +9,9 @@ function scene_set(qp : QParticle, sf : scenefun){
     sf(potentArr, realArr, imagArr);
 }
 
-function scene_Parabola(potentArr : Float64Array, realArr : Float64Array, imagArr : Float64Array, 
-                        energy : number = 40) : void{
+function scene_Parabola(potentArr : Float64Array, realArr : Float64Array, imagArr : Float64Array) : void{
     let n = potentArr.length;
+    let energy = 40;
 
     for (let i = 0; i < n; i++) {
         let x = i / n;
@@ -27,9 +27,9 @@ function scene_Parabola(potentArr : Float64Array, realArr : Float64Array, imagAr
     }
 }
 
-function scene_Tunneling(potentArr : Float64Array, realArr : Float64Array, imagArr : Float64Array,
-                        energy : number = 60) : void{
+function scene_Tunneling(potentArr : Float64Array, realArr : Float64Array, imagArr : Float64Array) : void{
     let n = potentArr.length;
+    let energy = 60;
 
     for (let i = 0; i < n; i++) {
         let x = i / n;
@@ -47,4 +47,4 @@ function scene_Tunneling(potentArr : Float64Array, realArr : Float64Array, imagA
     }
 }
 
-export {scene_Parabola, scene_Tunneling, scene_set};
+export {scene_Parabola, scene_Tunneling, scene_set, scenefun};

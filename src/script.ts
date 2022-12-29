@@ -1,5 +1,5 @@
 import {QParticle, QRenderer} from "./quantumMech.js"
-import {scene_Parabola, scene_Tunneling, scene_set} from "./scenes.js"
+import {scene_Parabola, scene_Tunneling, scene_set, scenefun} from "./scenes.js"
 
 var canvas : HTMLElement | null = document.getElementById("canvas");
 
@@ -34,13 +34,19 @@ var textarea_scene : HTMLTextAreaElement = document.getElementById("textarea_sce
 var button_applyScene = document.getElementById("button_applyScene");
 button_applyScene.onclick = () => {
     let s = textarea_scene.value;
-    eval("\"use strict\";\n" + s);
+    let f : scenefun = new Function('potentArr', 'realArr', 'imagArr', "\"use strict\";\n" + s) as scenefun;
+    scene_set(qparticle, f);
+    qparticle.Psi.setPeak(0.8);
+    qrenderer.setVjmax(0.8);
 }
 
 var scene_gen = [scene_Parabola, scene_Tunneling];
 var select_scene : HTMLSelectElement = document.getElementById("select_scene") as HTMLSelectElement;
 select_scene.onchange = () => {
     let scene = parseInt(select_scene.value);
+    scene_set(qparticle, scene_gen[scene]);
+    qparticle.Psi.setPeak(0.8);
+    qrenderer.setVjmax(0.8);
 }
 
 var button_ppause = document.getElementById("button_toggle_play");

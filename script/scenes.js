@@ -4,8 +4,9 @@ function scene_set(qp, sf) {
     let imagArr = qp.Psi.imag;
     sf(potentArr, realArr, imagArr);
 }
-function scene_Parabola(potentArr, realArr, imagArr, energy = 40) {
+function scene_Parabola(potentArr, realArr, imagArr) {
     let n = potentArr.length;
+    let energy = 40;
     for (let i = 0; i < n; i++) {
         let x = i / n;
         let y = -(x - 0.1) * (x - 0.4);
@@ -18,8 +19,9 @@ function scene_Parabola(potentArr, realArr, imagArr, energy = 40) {
         potentArr[i] = n * n * (x - 0.5) * (x - 0.5);
     }
 }
-function scene_Tunneling(potentArr, realArr, imagArr, energy = 60) {
+function scene_Tunneling(potentArr, realArr, imagArr) {
     let n = potentArr.length;
+    let energy = 60;
     for (let i = 0; i < n; i++) {
         let x = i / n;
         let y = -(x - 0.7) * (x - 0.9);
