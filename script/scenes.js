@@ -1,3 +1,9 @@
+function scene_set(qp, sf) {
+    let potentArr = qp.V;
+    let realArr = qp.Psi.real;
+    let imagArr = qp.Psi.imag;
+    sf(potentArr, realArr, imagArr);
+}
 function scene_Parabola(potentArr, realArr, imagArr, energy = 40) {
     let n = potentArr.length;
     for (let i = 0; i < n; i++) {
@@ -28,4 +34,4 @@ function scene_Tunneling(potentArr, realArr, imagArr, energy = 60) {
         potentArr[i] = n * n * 0.05;
     }
 }
-export { scene_Parabola, scene_Tunneling };
+export { scene_Parabola, scene_Tunneling, scene_set };

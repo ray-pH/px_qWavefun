@@ -1,3 +1,14 @@
+import { QParticle} from "./quantumMech.js"
+
+type scenefun = (p : Float64Array, r : Float64Array, i : Float64Array) => void;
+
+function scene_set(qp : QParticle, sf : scenefun){
+    let potentArr = qp.V;
+    let realArr   = qp.Psi.real;
+    let imagArr   = qp.Psi.imag;
+    sf(potentArr, realArr, imagArr);
+}
+
 function scene_Parabola(potentArr : Float64Array, realArr : Float64Array, imagArr : Float64Array, 
                         energy : number = 40) : void{
     let n = potentArr.length;
@@ -36,4 +47,4 @@ function scene_Tunneling(potentArr : Float64Array, realArr : Float64Array, imagA
     }
 }
 
-export {scene_Parabola, scene_Tunneling};
+export {scene_Parabola, scene_Tunneling, scene_set};
