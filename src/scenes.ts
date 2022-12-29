@@ -14,8 +14,8 @@ function strScene_toFun(s : string) : scenefun {
     return f;
 }
 
-let strScene_Parabola : string = `
-let n = potentArr.length;
+let strScene_Parabola : string = 
+`let n = potentArr.length;
 let energy = 40;
 
 for (let i = 0; i < n; i++) {
@@ -32,8 +32,8 @@ for (let i = 0; i < n; i++){
 }
 `
 
-let strScene_Tunneling : string = `
-let n = potentArr.length;
+let strScene_Tunneling : string = 
+`let n = potentArr.length;
 let energy = 60;
 
 for (let i = 0; i < n; i++) {

@@ -8,8 +8,7 @@ function strScene_toFun(s) {
     let f = new Function('potentArr', 'realArr', 'imagArr', "\"use strict\";\n" + s);
     return f;
 }
-let strScene_Parabola = `
-let n = potentArr.length;
+let strScene_Parabola = `let n = potentArr.length;
 let energy = 40;
 
 for (let i = 0; i < n; i++) {
@@ -25,8 +24,7 @@ for (let i = 0; i < n; i++){
     potentArr[i] = n * n * (x-0.5) * (x-0.5);
 }
 `;
-let strScene_Tunneling = `
-let n = potentArr.length;
+let strScene_Tunneling = `let n = potentArr.length;
 let energy = 60;
 
 for (let i = 0; i < n; i++) {

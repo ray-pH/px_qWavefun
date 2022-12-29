@@ -13,7 +13,6 @@
             <a href="">PixelPhysics</a>
             <span class="right">·</span>
         </div>
-        <br>
         <div class="main">
             <div class="left-main">
                 <div class="canvas-container">
@@ -51,15 +50,17 @@
                     &nbsp; ]
                     &nbsp;| Ψ &gt; 
                 </div>
-                <label for="select_scene" id="select_scene_label">Scene :</label>
+                <label for="select_scene">Scene :</label>
                 <select name="select_scene" id="select_scene">
                     <option value="0">Parabolic Potential</option>
                     <option value="1">Quantum Tunneling</option>
-                </select><br>
-                <div id="scene-input-container">
+                </select>
+                <button class="morebutton" id="button_moreScene">···</button>
+                <br>
+                <div class="hideable_container" id="container_sceneInput">
                     <textarea id="textarea_scene"></textarea>
+                    <button id="button_applyScene">apply</button>
                 </div>
-                <button id="button_applyScene">apply</button>
             </div>
         </div>
     </body>

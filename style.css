@@ -55,7 +55,20 @@ button{
     font-size  : 20px;
     font-weight: 600;
     letter-spacing: 1px;
-    border-width: 2px;
+    border: none;
+    /* border-width: 2px; */
+    background-color: #2E2E2E;
+    color: #FFF;
+    padding: 3px 10px 3px 10px;
+}
+button:hover {
+    cursor: pointer;
+    background-color: #666;
+    /* color: #FFF; */
+}
+.morebutton {
+    padding: 0px 10px 0px 10px;
+    height: 1em;
 }
 
 .frac {
@@ -93,6 +106,8 @@ button{
 #select_scene {
     font-family: "PixelUniCode";
     font-size  : 16px;
+    height     : 28px;
+    /* font-size  : 20px; */
     font-weight: 600;
     letter-spacing: 1px;
 }
@@ -103,4 +118,20 @@ button{
 /*     letter-spacing: 1px; */
 /* } */
 
+.hideable_container {
+    margin: 10px;
+    margin-left: 0;
+    background-color: #00000022;
+    padding: 10px;
+    display: none;
+}
 
+#textarea_scene {
+    /* font-family: "PixelUniCode"; */
+    /* font-size  : 20px; */
+    /* letter-spacing: 1px; */
+    resize : vertical;
+    width: 99%;
+    height: 10em;
+    border-width: 2px;
+}
