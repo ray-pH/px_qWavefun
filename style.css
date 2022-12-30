@@ -43,7 +43,7 @@ body {
 
 .canvas-container {
     float: left;
-    margin: 10px;
+    margin-left: 10px;
 }
 
 .eq {
@@ -89,6 +89,7 @@ button:hover {
 .legend {
     display: inline-block;
     min-width: 65px;
+    margin-left: 10px;
 }
 
 .main {
