@@ -8,25 +8,39 @@ var dt = 1e-6;
 // to make it stable set at most Δt < δψ/n^2
 var qparticle = new QParticle(n, dt);
 var qrenderer = new QRenderer(qparticle, canvas, ny);
+var renderOptions = {
+    showReal: true,
+    showImag: true,
+    showProb: true,
+    showPotential: true,
+    showPotentialBottom: false,
+    scalePotential: 1.0,
+    scaleWave: 1.0,
+};
 var paused = false;
 var n_iter = 10;
 function setup() {
-    container_sceneInput.style.display = 'none';
+    let containerIds = ["container_sceneInput", "container_renderOption", "container_simulOption"];
+    containerIds.forEach((id) => { document.getElementById(id).style.display = 'none'; });
     let initScene = strScene_Parabola;
     scene_set(qparticle, strScene_toFun(initScene));
     textarea_scene.value = initScene;
     qparticle.Psi.setPeak(0.8);
     qrenderer.setVjmax(0.8);
-    qrenderer.option_drawBottomPot = false;
 }
 function loop() {
     if (!paused) {
         for (let i = 0; i < n_iter; i++)
             qparticle.stepSchrodinger();
-        qrenderer.draw();
+        qrenderer.draw(renderOptions);
     }
     requestAnimationFrame(loop);
 }
+var button_ppause = document.getElementById("button_toggle_play");
+button_ppause.onclick = () => {
+    paused = !paused;
+    button_ppause.innerHTML = paused ? "‣ play" : "• pause";
+};
 var textarea_scene = document.getElementById("textarea_scene");
 var button_applyScene = document.getElementById("button_applyScene");
 button_applyScene.onclick = () => {
@@ -47,15 +61,22 @@ select_scene.onchange = () => {
     qparticle.Psi.setPeak(0.8);
     qrenderer.setVjmax(0.8);
 };
-var button_moreScene = document.getElementById("button_moreScene");
-var container_sceneInput = document.getElementById("container_sceneInput");
-button_moreScene.onclick = () => {
-    container_sceneInput.style.display = (container_sceneInput.style.display == 'none') ? 'block' : 'none';
-};
-var button_ppause = document.getElementById("button_toggle_play");
-button_ppause.onclick = () => {
-    paused = !paused;
-    button_ppause.innerHTML = paused ? "play" : "pause";
-};
+function setButtonShow(buttonId, containerId) {
+    let button = document.getElementById(buttonId);
+    let container = document.getElementById(containerId);
+    button.onclick = () => { container.style.display = (container.style.display == 'none') ? 'block' : 'none'; };
+}
+setButtonShow("button_moreScene", "container_sceneInput");
+setButtonShow("button_moreRender", "container_renderOption");
+setButtonShow("button_moreSimul", "container_simulOption");
+function attachCheckbox(checkboxId, opt, component) {
+    let checkbox = document.getElementById(checkboxId);
+    checkbox.onchange = () => { opt[component] = checkbox.checked; };
+}
+attachCheckbox("cx_showReal", renderOptions, "showReal");
+attachCheckbox("cx_showImag", renderOptions, "showImag");
+attachCheckbox("cx_showProb", renderOptions, "showProb");
+attachCheckbox("cx_showPotent", renderOptions, "showPotential");
+attachCheckbox("cx_showNegPotent", renderOptions, "showPotentialBottom");
 setup();
 loop();

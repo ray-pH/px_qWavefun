@@ -97,7 +97,6 @@ class QRenderer {
         this.Vscale = 1.0;
         this.waveScale = 1.0;
         this.Vdynamic = false; // flag, whether V changes over time
-        this.option_drawBottomPot = true;
         this.qm = qm;
         this.ctx = canvas.getContext('2d');
         this.width = canvas.width;
@@ -120,7 +119,7 @@ class QRenderer {
     setWavescale(Ws) { this.waveScale = Ws; }
     calcVscale() {
         let Vmax = Math.max(...this.qm.V);
-        let Vmin = Math.max(...this.qm.V);
+        let Vmin = Math.min(...this.qm.V);
         let peak0 = Math.max(Math.abs(Vmax), Math.abs(Vmin));
         this.Vscale = this.Vjmax / peak0;
     }
@@ -155,14 +154,14 @@ class QRenderer {
             }
         }
     }
-    drawPotential(color) {
+    drawPotential(color, drawBottomPot) {
         if (this.Vdynamic)
             this.calcVscale;
         let potent = this.qm.V;
         let cj = this.yres / 2;
         for (let i = 0; i < this.qm.n; i++) {
             let jpotent = Math.round(potent[i] * this.Vscale * this.yres / 2);
-            let jfrom = (this.option_drawBottomPot) ? -this.yres / 2 : 0;
+            let jfrom = (drawBottomPot) ? -this.yres / 2 : 0;
             let jto = Math.min(jpotent, this.yres / 2);
             for (let j = jfrom; j < jto; j++) {
                 var ptr = 4 * (i + (cj - j) * this.xres);
@@ -173,12 +172,16 @@ class QRenderer {
             }
         }
     }
-    draw() {
+    draw(renderOptions) {
         this.clearImgdata();
-        this.drawPotential(hex2rgb(0xBBBBBB)); //#BBBBBB
-        this.drawProb(hex2rgb(0x2E2E2E)); //#2E2E2E
-        this.drawComponent(this.qm.Psi.real, hex2rgb(0x3477EB)); // #3477eb
-        this.drawComponent(this.qm.Psi.imag, hex2rgb(0xE81570)); // #e81570
+        if (renderOptions.showPotential)
+            this.drawPotential(hex2rgb(0xBBBBBB), renderOptions.showPotentialBottom); //#BBBBBB
+        if (renderOptions.showProb)
+            this.drawProb(hex2rgb(0x2E2E2E)); //#2E2E2E
+        if (renderOptions.showReal)
+            this.drawComponent(this.qm.Psi.real, hex2rgb(0x3477EB)); // #3477eb
+        if (renderOptions.showImag)
+            this.drawComponent(this.qm.Psi.imag, hex2rgb(0xE81570)); // #e81570
         // put data into temp_canvas
         this.data_ctx.putImageData(this.data_img_data, 0, 0);
         // draw into original canvas

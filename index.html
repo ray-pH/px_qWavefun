@@ -23,7 +23,6 @@
                     <span style="color: #2e2e2e">P = |Ψ| ²</span><br>
                     <span style="color: #3477eb">Re(Ψ)</span><br>
                     <span style="color: #e81570">Im(Ψ)</span><br>
-                <button id="button_toggle_play">pause</button>
                 </div>
             </div>
             <div class="right-main">
@@ -50,6 +49,8 @@
                     &nbsp; ]
                     &nbsp;| Ψ &gt; 
                 </div>
+                <button id="button_toggle_play">• pause</button>
+                <br><br>
                 <label for="select_scene">Scene :</label>
                 <select name="select_scene" id="select_scene">
                     <option value="0">Parabolic Potential</option>
@@ -60,6 +61,34 @@
                 <div class="hideable_container" id="container_sceneInput">
                     <textarea id="textarea_scene"></textarea>
                     <button id="button_applyScene">apply</button>
+                </div>
+                <br><hr>
+                Render Options
+                <button class="morebutton" id="button_moreRender">∨</button>
+                <br>
+                <div class="hideable_container" id="container_renderOption">
+                    <!-- <div style="display:grid; grid-template-columns: repeat(4, 1fr);"> -->
+                    <input type="checkbox" id="cx_showReal" checked>
+                    <label for="cx_showReal">show Re</label>
+                    <input type="checkbox" id="cx_showProb" checked>
+                    <label for="cx_showProb">show Probability</label>
+                    <br>
+                    <input type="checkbox" id="cx_showImag" checked>
+                    <label for="cx_showImag">show Im</label>
+                    <input type="checkbox" id="cx_showPotent" checked>
+                    <label for="cx_showPotent">show Potential</label>
+                    <br>
+                    <input type="checkbox" id="cx_showNegPotent">
+                    <label for="cx_showNegPotent">show Negative Potential</label>
+                    <!-- </div> -->
+                </div>
+                <br>
+                <br>
+                Simulation Options
+                <button class="morebutton" id="button_moreSimul">∨</button>
+                <br>
+                <div class="hideable_container" id="container_simulOption">
+                    test
                 </div>
             </div>
         </div>
