@@ -13,14 +13,14 @@ var dt = 1e-6;
 var qparticle = new QParticle(n, dt);
 var qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement, ny);
 
-var renderOptions : RenderOptions = {
+var ro : RenderOptions = {
     showReal : true,
     showImag : true,
     showProb : true,
     showPotential : true,
     showPotentialBottom : false,
-    scalePotential : 1.0,
-    scaleWave : 1.0,
+    scalePotential : 8e-5,
+    scaleWave : 0.8,
 }
 
 var paused = false;
@@ -34,15 +34,15 @@ function setup(){
     scene_set(qparticle, strScene_toFun(initScene));
     textarea_scene.value = initScene;
 
-    qrenderer.setWavescale(0.8);
-    qrenderer.setVjmax(0.8);
+    qrenderer.setWavescale(ro.scaleWave);
+    qrenderer.setVscale(ro.scaleWave);
 
 }
 function loop() {
     if (!paused){
         for (let i = 0; i < n_iter; i++)
             qparticle.stepSchrodinger();
-        qrenderer.draw(renderOptions);
+        qrenderer.draw(ro);
     }
     requestAnimationFrame(loop);
 }
@@ -59,8 +59,8 @@ button_applyScene.onclick = () => {
     let s = textarea_scene.value;
     let f : scenefun = strScene_toFun(s);
     scene_set(qparticle, f);
-    qrenderer.setWavescale(0.8);
-    qrenderer.setVjmax(0.8);
+    qrenderer.setWavescale(ro.scaleWave);
+    qrenderer.setVscale(ro.scaleWave);
 }
 
 var strScenes = [strScene_Parabola, strScene_Tunneling];
@@ -92,11 +92,11 @@ function attachCheckbox(checkboxId : string, opt : RenderOptions, component : st
     let checkbox = document.getElementById(checkboxId) as HTMLInputElement;
     checkbox.onchange = ()=>{ opt[component] = checkbox.checked };
 }
-attachCheckbox("cx_showReal",   renderOptions, "showReal");
-attachCheckbox("cx_showImag",   renderOptions, "showImag");
-attachCheckbox("cx_showProb",   renderOptions, "showProb");
-attachCheckbox("cx_showPotent", renderOptions, "showPotential");
-attachCheckbox("cx_showNegPotent", renderOptions, "showPotentialBottom");
+attachCheckbox("cx_showReal",   ro, "showReal");
+attachCheckbox("cx_showImag",   ro, "showImag");
+attachCheckbox("cx_showProb",   ro, "showProb");
+attachCheckbox("cx_showPotent", ro, "showPotential");
+attachCheckbox("cx_showNegPotent", ro, "showPotentialBottom");
 
 setup();
 loop();

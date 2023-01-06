@@ -8,7 +8,6 @@ function scene_set(qp : QParticle, sf : scenefun){
     let imagArr   = qp.Psi.imag;
     let normalize = {'wavepeak' : 1.0};
     sf(potentArr.length, potentArr, realArr, imagArr, normalize);
-    console.log(normalize);
     qp.Psi.setPeak(normalize.wavepeak);
 }
 

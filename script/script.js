@@ -14,8 +14,8 @@ var renderOptions = {
     showProb: true,
     showPotential: true,
     showPotentialBottom: false,
-    scalePotential: 1.0,
-    scaleWave: 1.0,
+    scalePotential: 8e-5,
+    scaleWave: 0.8,
 };
 var paused = false;
 var n_iter = 10;

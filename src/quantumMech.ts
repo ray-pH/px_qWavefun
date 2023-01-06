@@ -176,6 +176,7 @@ class QRenderer {
     clearImgdata(){ this.data_pixels.fill(255); }
     setVdynamic(Vd : boolean){ this.Vdynamic = Vd; }
     setWavescale(Ws : number){ this.waveScale = Ws; }
+    setVscale(Vs : number){ this.Vscale = Vs; }
     calcVscale(){
         let Vmax = Math.max(...this.qm.V);
         let Vmin = Math.min(...this.qm.V);
@@ -192,7 +193,8 @@ class QRenderer {
         let cj    = this.yres/2;
         for (let i = 0; i < this.qm.n; i++){
             let jprob = Math.round(probs[i] * this.waveScale * this.yres/2);
-            for (let j = 0; j < jprob; j++){
+            let jto     = Math.min(jprob, this.yres/2);
+            for (let j = 0; j < jto; j++){
                 var ptr = 4 * (i + (cj - j) * this.xres );
                 this.data_pixels[ptr+0] = color[0];
                 this.data_pixels[ptr+1] = color[1];

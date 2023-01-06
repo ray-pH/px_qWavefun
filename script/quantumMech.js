@@ -117,6 +117,7 @@ class QRenderer {
     clearImgdata() { this.data_pixels.fill(255); }
     setVdynamic(Vd) { this.Vdynamic = Vd; }
     setWavescale(Ws) { this.waveScale = Ws; }
+    setVscale(Vs) { this.Vscale = Vs; }
     calcVscale() {
         let Vmax = Math.max(...this.qm.V);
         let Vmin = Math.min(...this.qm.V);
