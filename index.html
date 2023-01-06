@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-        <title>px Quantum</title>
-        <link rel="stylesheet" href="./style.css">
-        <script type="module" src="./script/script.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111111">
+    <title>px Quantum</title>
+    <link rel="stylesheet" href="./style.css">
+    <script type="module" src="./script/script.js"></script>
+
+    <meta property="og:image" content="https://raw.githubusercontent.com/ray-pH/img/rlogo.png"/>
+    <meta property="og:description" content="Schrodinger Equation Simulation"/>
+    <meta property="og:url"content="https://ray-ph.github.io/px_qWavefun"/>
+    <meta property="og:title" content="qWavefun">
     </head>
     <body>
         <div class="header">
-            <span class="title">Quantum Wavefunction</span>
+            <span class="title">Quantum</span>
             <a href="https://github.com/ray-pH/px_qWavefun">GitHub</a>
             <a href="../pixelPysics">PixelPhysics</a>
             <span class="right">·</span>
@@ -49,14 +56,14 @@
                     &nbsp; ]
                     &nbsp;| Ψ &gt; 
                 </div>
-                <button id="button_toggle_play">• pause</button>
+                <button id="button_toggle_play">pause</button>
                 <br><br>
                 <label for="select_scene">Scene :</label>
                 <select name="select_scene" id="select_scene">
                     <option value="0">Parabolic Potential</option>
                     <option value="1">Quantum Tunneling</option>
                 </select>
-                <button class="morebutton" id="button_moreScene">···</button>
+                <button class="morebutton" id="button_moreScene">∨</button>
                 <br>
                 <div class="hideable_container" id="container_sceneInput">
                     <textarea id="textarea_scene"></textarea>
