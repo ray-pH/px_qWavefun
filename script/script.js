@@ -8,7 +8,7 @@ var dt = 1e-6;
 // to make it stable set at most Δt < δψ/n^2
 var qparticle = new QParticle(n, dt);
 var qrenderer = new QRenderer(qparticle, canvas, ny);
-var renderOptions = {
+var ro = {
     showReal: true,
     showImag: true,
     showProb: true,
@@ -25,14 +25,14 @@ function setup() {
     let initScene = strScene_Parabola;
     scene_set(qparticle, strScene_toFun(initScene));
     textarea_scene.value = initScene;
-    qrenderer.setWavescale(0.8);
-    qrenderer.setVjmax(0.8);
+    qrenderer.setWavescale(ro.scaleWave);
+    qrenderer.setVscale(ro.scalePotential);
 }
 function loop() {
     if (!paused) {
         for (let i = 0; i < n_iter; i++)
             qparticle.stepSchrodinger();
-        qrenderer.draw(renderOptions);
+        qrenderer.draw(ro);
     }
     requestAnimationFrame(loop);
 }
@@ -47,8 +47,9 @@ button_applyScene.onclick = () => {
     let s = textarea_scene.value;
     let f = strScene_toFun(s);
     scene_set(qparticle, f);
-    qrenderer.setWavescale(0.8);
-    qrenderer.setVjmax(0.8);
+    qrenderer.setWavescale(ro.scaleWave);
+    qrenderer.setVscale(ro.scalePotential);
+    qrenderer.draw(ro);
 };
 var strScenes = [strScene_Parabola, strScene_Tunneling];
 var select_scene = document.getElementById("select_scene");
@@ -58,8 +59,9 @@ select_scene.onchange = () => {
     textarea_scene.value = strScene;
     let f = strScene_toFun(strScene);
     scene_set(qparticle, f);
-    qrenderer.setWavescale(0.8);
-    qrenderer.setVjmax(0.8);
+    qrenderer.setWavescale(ro.scaleWave);
+    qrenderer.setVscale(ro.scalePotential);
+    qrenderer.draw(ro);
 };
 function setButtonShow(buttonId, containerId) {
     let button = document.getElementById(buttonId);
@@ -75,12 +77,15 @@ setButtonShow("button_moreRender", "container_renderOption");
 setButtonShow("button_moreSimul", "container_simulOption");
 function attachCheckbox(checkboxId, opt, component) {
     let checkbox = document.getElementById(checkboxId);
-    checkbox.onchange = () => { opt[component] = checkbox.checked; };
+    checkbox.onchange = () => {
+        opt[component] = checkbox.checked;
+        qrenderer.draw(ro);
+    };
 }
-attachCheckbox("cx_showReal", renderOptions, "showReal");
-attachCheckbox("cx_showImag", renderOptions, "showImag");
-attachCheckbox("cx_showProb", renderOptions, "showProb");
-attachCheckbox("cx_showPotent", renderOptions, "showPotential");
-attachCheckbox("cx_showNegPotent", renderOptions, "showPotentialBottom");
+attachCheckbox("cx_showReal", ro, "showReal");
+attachCheckbox("cx_showImag", ro, "showImag");
+attachCheckbox("cx_showProb", ro, "showProb");
+attachCheckbox("cx_showPotent", ro, "showPotential");
+attachCheckbox("cx_showNegPotent", ro, "showPotentialBottom");
 setup();
 loop();

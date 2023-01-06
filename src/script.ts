@@ -35,7 +35,7 @@ function setup(){
     textarea_scene.value = initScene;
 
     qrenderer.setWavescale(ro.scaleWave);
-    qrenderer.setVscale(ro.scaleWave);
+    qrenderer.setVscale(ro.scalePotential);
 
 }
 function loop() {
@@ -60,7 +60,8 @@ button_applyScene.onclick = () => {
     let f : scenefun = strScene_toFun(s);
     scene_set(qparticle, f);
     qrenderer.setWavescale(ro.scaleWave);
-    qrenderer.setVscale(ro.scaleWave);
+    qrenderer.setVscale(ro.scalePotential);
+    qrenderer.draw(ro);
 }
 
 var strScenes = [strScene_Parabola, strScene_Tunneling];
@@ -71,8 +72,9 @@ select_scene.onchange = () => {
     textarea_scene.value = strScene;
     let f : scenefun = strScene_toFun(strScene);
     scene_set(qparticle, f);
-    qrenderer.setWavescale(0.8);
-    qrenderer.setVjmax(0.8);
+    qrenderer.setWavescale(ro.scaleWave);
+    qrenderer.setVscale(ro.scalePotential);
+    qrenderer.draw(ro);
 }
 
 function setButtonShow(buttonId : string, containerId : string){
@@ -90,7 +92,10 @@ setButtonShow("button_moreSimul" , "container_simulOption");
 
 function attachCheckbox(checkboxId : string, opt : RenderOptions, component : string){
     let checkbox = document.getElementById(checkboxId) as HTMLInputElement;
-    checkbox.onchange = ()=>{ opt[component] = checkbox.checked };
+    checkbox.onchange = ()=>{ 
+        opt[component] = checkbox.checked 
+        qrenderer.draw(ro);
+    };
 }
 attachCheckbox("cx_showReal",   ro, "showReal");
 attachCheckbox("cx_showImag",   ro, "showImag");
