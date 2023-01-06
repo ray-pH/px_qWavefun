@@ -1,22 +1,25 @@
 import { QParticle} from "./quantumMech.js"
 
-type scenefun = (p : Float64Array, r : Float64Array, i : Float64Array) => void;
+type scenefun = (n : number, p : Float64Array, r : Float64Array, i : Float64Array, no : Object) => void;
 
 function scene_set(qp : QParticle, sf : scenefun){
     let potentArr = qp.V;
     let realArr   = qp.Psi.real;
     let imagArr   = qp.Psi.imag;
-    sf(potentArr, realArr, imagArr);
+    let normalize = {'wavepeak' : 1.0};
+    sf(potentArr.length, potentArr, realArr, imagArr, normalize);
+    console.log(normalize);
+    qp.Psi.setPeak(normalize.wavepeak);
 }
 
 function strScene_toFun(s : string) : scenefun {
-    let f : scenefun = new Function('potent', 'real', 'imag', "\"use strict\";\n" + s) as scenefun;
+    let f : scenefun = new Function('n', 'potent', 'real', 'imag', 'normalize', "\"use strict\";\n" + s) as scenefun;
     return f;
 }
 
 let strScene_Parabola : string = 
-`let n = potent.length;
-let energy = 40;
+`let energy = 40;
+normalize.wavepeak = 0.8;
 
 for (let i = 0; i < n; i++) {
     let x = i / n;
@@ -33,8 +36,8 @@ for (let i = 0; i < n; i++){
 `
 
 let strScene_Tunneling : string = 
-`let n = potent.length;
-let energy = 60;
+`let energy = 60;
+normalize.wavepeak = 1.0;
 
 for (let i = 0; i < n; i++) {
     let x = i / n;

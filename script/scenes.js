@@ -2,14 +2,17 @@ function scene_set(qp, sf) {
     let potentArr = qp.V;
     let realArr = qp.Psi.real;
     let imagArr = qp.Psi.imag;
-    sf(potentArr, realArr, imagArr);
+    let normalize = { 'wavepeak': 1.0 };
+    sf(potentArr.length, potentArr, realArr, imagArr, normalize);
+    console.log(normalize);
+    qp.Psi.setPeak(normalize.wavepeak);
 }
 function strScene_toFun(s) {
-    let f = new Function('potent', 'real', 'imag', "\"use strict\";\n" + s);
+    let f = new Function('n', 'potent', 'real', 'imag', 'normalize', "\"use strict\";\n" + s);
     return f;
 }
-let strScene_Parabola = `let n = potent.length;
-let energy = 40;
+let strScene_Parabola = `let energy = 40;
+normalize.wavepeak = 0.8;
 
 for (let i = 0; i < n; i++) {
     let x = i / n;
@@ -24,8 +27,8 @@ for (let i = 0; i < n; i++){
     potent[i] = n * n * (x-0.5) * (x-0.5);
 }
 `;
-let strScene_Tunneling = `let n = potent.length;
-let energy = 60;
+let strScene_Tunneling = `let energy = 60;
+normalize.wavepeak = 1.0;
 
 for (let i = 0; i < n; i++) {
     let x = i / n;

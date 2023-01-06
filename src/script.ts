@@ -34,7 +34,7 @@ function setup(){
     scene_set(qparticle, strScene_toFun(initScene));
     textarea_scene.value = initScene;
 
-    qparticle.Psi.setPeak(0.8);
+    qrenderer.setWavescale(0.8);
     qrenderer.setVjmax(0.8);
 
 }
@@ -59,7 +59,7 @@ button_applyScene.onclick = () => {
     let s = textarea_scene.value;
     let f : scenefun = strScene_toFun(s);
     scene_set(qparticle, f);
-    qparticle.Psi.setPeak(0.8);
+    qrenderer.setWavescale(0.8);
     qrenderer.setVjmax(0.8);
 }
 
@@ -71,7 +71,7 @@ select_scene.onchange = () => {
     textarea_scene.value = strScene;
     let f : scenefun = strScene_toFun(strScene);
     scene_set(qparticle, f);
-    qparticle.Psi.setPeak(0.8);
+    qrenderer.setWavescale(0.8);
     qrenderer.setVjmax(0.8);
 }
 

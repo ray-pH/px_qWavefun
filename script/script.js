@@ -25,7 +25,7 @@ function setup() {
     let initScene = strScene_Parabola;
     scene_set(qparticle, strScene_toFun(initScene));
     textarea_scene.value = initScene;
-    qparticle.Psi.setPeak(0.8);
+    qrenderer.setWavescale(0.8);
     qrenderer.setVjmax(0.8);
 }
 function loop() {
@@ -39,7 +39,7 @@ function loop() {
 var button_ppause = document.getElementById("button_toggle_play");
 button_ppause.onclick = () => {
     paused = !paused;
-    button_ppause.innerHTML = paused ? "‣ play" : "• pause";
+    button_ppause.innerHTML = paused ? "play" : "pause";
 };
 var textarea_scene = document.getElementById("textarea_scene");
 var button_applyScene = document.getElementById("button_applyScene");
@@ -47,7 +47,7 @@ button_applyScene.onclick = () => {
     let s = textarea_scene.value;
     let f = strScene_toFun(s);
     scene_set(qparticle, f);
-    qparticle.Psi.setPeak(0.8);
+    qrenderer.setWavescale(0.8);
     qrenderer.setVjmax(0.8);
 };
 var strScenes = [strScene_Parabola, strScene_Tunneling];
@@ -58,13 +58,17 @@ select_scene.onchange = () => {
     textarea_scene.value = strScene;
     let f = strScene_toFun(strScene);
     scene_set(qparticle, f);
-    qparticle.Psi.setPeak(0.8);
+    qrenderer.setWavescale(0.8);
     qrenderer.setVjmax(0.8);
 };
 function setButtonShow(buttonId, containerId) {
     let button = document.getElementById(buttonId);
     let container = document.getElementById(containerId);
-    button.onclick = () => { container.style.display = (container.style.display == 'none') ? 'block' : 'none'; };
+    button.onclick = () => {
+        let changeto = (container.style.display == 'none') ? 'block' : 'none';
+        button.innerHTML = (changeto == 'none') ? '∨' : '∧';
+        container.style.display = changeto;
+    };
 }
 setButtonShow("button_moreScene", "container_sceneInput");
 setButtonShow("button_moreRender", "container_renderOption");
