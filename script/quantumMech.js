@@ -118,6 +118,10 @@ class QRenderer {
     setVdynamic(Vd) { this.Vdynamic = Vd; }
     setWavescale(Ws) { this.waveScale = Ws; }
     setVscale(Vs) { this.Vscale = Vs; }
+    rescale(ro) {
+        this.waveScale = ro.scaleWave;
+        this.Vscale = ro.scalePotential;
+    }
     calcVscale() {
         let Vmax = Math.max(...this.qm.V);
         let Vmin = Math.min(...this.qm.V);

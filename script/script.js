@@ -25,8 +25,7 @@ function setup() {
     let initScene = strScene_Parabola;
     scene_set(qparticle, strScene_toFun(initScene));
     textarea_scene.value = initScene;
-    qrenderer.setWavescale(ro.scaleWave);
-    qrenderer.setVscale(ro.scalePotential);
+    qrenderer.rescale(ro);
 }
 function loop() {
     if (!paused) {
@@ -47,8 +46,7 @@ button_applyScene.onclick = () => {
     let s = textarea_scene.value;
     let f = strScene_toFun(s);
     scene_set(qparticle, f);
-    qrenderer.setWavescale(ro.scaleWave);
-    qrenderer.setVscale(ro.scalePotential);
+    qrenderer.rescale(ro);
     qrenderer.draw(ro);
 };
 var strScenes = [strScene_Parabola, strScene_Tunneling];
@@ -59,8 +57,7 @@ select_scene.onchange = () => {
     textarea_scene.value = strScene;
     let f = strScene_toFun(strScene);
     scene_set(qparticle, f);
-    qrenderer.setWavescale(ro.scaleWave);
-    qrenderer.setVscale(ro.scalePotential);
+    qrenderer.rescale(ro);
     qrenderer.draw(ro);
 };
 function setButtonShow(buttonId, containerId) {
@@ -87,5 +84,18 @@ attachCheckbox("cx_showImag", ro, "showImag");
 attachCheckbox("cx_showProb", ro, "showProb");
 attachCheckbox("cx_showPotent", ro, "showPotential");
 attachCheckbox("cx_showNegPotent", ro, "showPotentialBottom");
+const tx_ROcomponent = {
+    "tx_waveScale": "scaleWave",
+    "tx_potScale": "scalePotential",
+};
+for (let tx_id in tx_ROcomponent) {
+    let comp = tx_ROcomponent[tx_id];
+    let tx_element = document.getElementById(tx_id);
+    tx_element.value = ro[comp];
+    tx_element.oninput = () => {
+        ro[comp] = parseFloat(tx_element.value);
+        qrenderer.rescale(ro);
+    };
+}
 setup();
 loop();
