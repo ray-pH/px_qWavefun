@@ -14,6 +14,7 @@ var ro = {
     showProb: true,
     showPotential: true,
     showPotentialBottom: false,
+    verticalResolution: 300,
     scalePotential: 8e-5,
     scaleWave: 0.8,
 };
@@ -87,6 +88,7 @@ attachCheckbox("cx_showProb", ro, "showProb");
 attachCheckbox("cx_showPotent", ro, "showPotential");
 attachCheckbox("cx_showNegPotent", ro, "showPotentialBottom");
 const tx_ROcomponent = {
+    "tx_yres": "verticalResolution",
     "tx_waveScale": "scaleWave",
     "tx_potScale": "scalePotential",
 };

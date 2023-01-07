@@ -129,6 +129,7 @@ interface RenderOptions {
     showProb      : boolean,
     showPotential : boolean,
     showPotentialBottom : boolean,
+    verticalResolution : number,
     scalePotential: number,
     scaleWave     : number,
 }
@@ -158,14 +159,36 @@ class QRenderer {
         this.width    = canvas.width;
         this.height   = canvas.height;
 
-        this.xres  = qm.n;
-        this.yres  = yres;
+        this.xres   = qm.n;
+        this.yres   = yres;
+        this.canvas = canvas;
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.ctx.scale(canvas.width/this.xres, canvas.height/this.yres);
         this.ctx.imageSmoothingEnabled = false; // -> nearest-neighbor interpolation
         
         // temp canvas to store original values
         this.data_canvas        = document.createElement('canvas');
+        this.data_canvas.width  = this.xres;
+        this.data_canvas.height = this.yres;
+        this.data_ctx      = this.data_canvas.getContext('2d');
+        this.data_img_data = this.data_ctx.getImageData(0,0, this.data_canvas.width, this.data_canvas.height);
+        this.data_pixels   = this.data_img_data.data;
+    }
+
+    changeRes(ro : RenderOptions){
+        ro.verticalResolution = Math.round(ro.verticalResolution);
+        if (ro.verticalResolution <= 0) return;
+
+        this.xres = this.qm.n;
+        this.yres = ro.verticalResolution;
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.scale(this.canvas.width/this.xres, this.canvas.height/this.yres);
+        this.ctx.imageSmoothingEnabled = false; // -> nearest-neighbor interpolation
+        
+        // temp canvas to store original values
+        // this.data_canvas        = document.createElement('canvas');
         this.data_canvas.width  = this.xres;
         this.data_canvas.height = this.yres;
         this.data_ctx      = this.data_canvas.getContext('2d');
@@ -180,6 +203,7 @@ class QRenderer {
     rescale(ro : RenderOptions){
         this.waveScale = ro.scaleWave;
         this.Vscale    = ro.scalePotential;
+        if (this.yres != ro.verticalResolution) this.changeRes(ro);
     }
     calcVscale(){
         let Vmax = Math.max(...this.qm.V);

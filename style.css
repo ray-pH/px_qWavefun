@@ -142,5 +142,15 @@ button:hover {
 
 .grid_container{
     display: grid;
-    /* grid-template-columns: auto auto; */
+    grid-template-columns: 6em auto;
+}
+
+.grid_container > input {
+    padding-left: 0.2em;
+    font-family: "PixelUniCode";
+    font-size  : 16px;
+    /* height     : 28px; */
+    /* font-size  : 20px; */
+    font-weight: 600;
+    letter-spacing: 1px;
 }
