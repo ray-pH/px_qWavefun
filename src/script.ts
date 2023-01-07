@@ -24,8 +24,6 @@ const so : SimulOption = {
 // approximately dψ_re <= 2Δt/Δx^2 = 2Δt n^2
 // to make it stable set at most Δt < δψ/n^2
 
-// var qparticle = new QParticle(so.n, so.dt);
-// var qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement, ro.verticalResolution);
 var qparticle : QParticle;
 var qrenderer : QRenderer;
 function initSystem(){
