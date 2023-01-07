@@ -106,7 +106,16 @@
                 <button class="morebutton" id="button_moreSimul">∨</button>
                 <br>
                 <div class="hideable_container" id="container_simulOption">
-                    test
+                    <div class="grid_container">
+                        <label for="tx_n_grid">N grid</label>
+                        <input type="text" id="tx_n_grid" name="tx_n_grid">
+                        <label for="tx_n_iter">step per frame</label>
+                        <input type="text" id="tx_n_iter" name="tx_n_iter">
+                        <label for="tx_dt">dt</label>
+                        <input type="text" id="tx_dt" name="tx_dt">
+                    </div><br>
+                    <button id="button_applySimulOp">apply</button>
+                    <div id="span_errorSimulOp"></div>
                 </div>
             </div>
         </div>

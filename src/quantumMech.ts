@@ -54,6 +54,13 @@ class WaveFunction {
     }
 }
 
+interface SimulOption {
+    n      : number,
+    dt     : number,
+    n_iter : number,
+    solver : string,
+}
+
 class QParticle {
     n   : number;
     dx  : number;
@@ -278,4 +285,4 @@ class QRenderer {
     }
 }
 
-export {WaveFunction, QParticle, QRenderer, RenderOptions};
+export {WaveFunction, QParticle, QRenderer, RenderOptions, SimulOption};

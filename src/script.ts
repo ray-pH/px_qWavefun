@@ -1,19 +1,11 @@
-import {QParticle, QRenderer, RenderOptions} from "./quantumMech.js"
+import {QParticle, QRenderer, RenderOptions, SimulOption} from "./quantumMech.js"
 import {scene_set, scenefun, strScene_toFun, strScene_Parabola, strScene_Tunneling} from "./scenes.js"
 
 var canvas : HTMLElement | null = document.getElementById("canvas");
 
-var n  = 200;
-var ny = 300; // for canvas
-var dt = 1e-6; 
 
-// approximately dψ_re <= 2Δt/Δx^2 = 2Δt n^2
-// to make it stable set at most Δt < δψ/n^2
 
-var qparticle = new QParticle(n, dt);
-var qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement, ny);
-
-var ro : RenderOptions = {
+const ro : RenderOptions = {
     showReal : true,
     showImag : true,
     showProb : true,
@@ -23,11 +15,27 @@ var ro : RenderOptions = {
     scalePotential : 8e-5,
     scaleWave : 0.8,
 }
+const so : SimulOption = {
+    n  : 200,
+    dt : 1e-6,
+    n_iter : 10,
+    solver : 'heun', //parameter not implemented yet
+}
+// approximately dψ_re <= 2Δt/Δx^2 = 2Δt n^2
+// to make it stable set at most Δt < δψ/n^2
+
+// var qparticle = new QParticle(so.n, so.dt);
+// var qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement, ro.verticalResolution);
+var qparticle : QParticle;
+var qrenderer : QRenderer;
+function initSystem(){
+    qparticle = new QParticle(so.n, so.dt);
+    qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement, ro.verticalResolution);
+}
 
 var paused = false;
-var n_iter = 10;
-
 function setup(){
+    initSystem();
     let containerIds = ["container_sceneInput", "container_renderOption", "container_simulOption"]
     containerIds.forEach((id : string) => { document.getElementById(id).style.display = 'none'; })
 
@@ -36,11 +44,10 @@ function setup(){
     textarea_scene.value = initScene;
 
     qrenderer.rescale(ro);
-
 }
 function loop() {
     if (!paused){
-        for (let i = 0; i < n_iter; i++)
+        for (let i = 0; i < so.n_iter; i++)
             qparticle.stepSchrodinger();
         qrenderer.draw(ro);
     }
@@ -120,12 +127,26 @@ function rewrite_txRO(){
 for (let tx_id in tx_ROcomponent){
     let comp = tx_ROcomponent[tx_id];
     let tx_element : HTMLInputElement = document.getElementById(tx_id) as HTMLInputElement;
-    tx_element.value = ro[comp];
+    let val : number = ro[comp];
+    tx_element.value = (val < 0.01) ? val.toExponential() : val.toString();
     tx_element.oninput = () => { 
         ro[comp] = parseFloat(tx_element.value); 
         qrenderer.rescale(ro);
     }
 }
+
+const tx_SOcomponent = {
+    "tx_n_grid" : "n",
+    "tx_n_iter" : "n_iter",
+    "tx_dt"     : "dt",
+}
+for (let tx_id in tx_SOcomponent){
+    let comp = tx_SOcomponent[tx_id];
+    let tx_element : HTMLInputElement = document.getElementById(tx_id) as HTMLInputElement;
+    let val : number = so[comp];
+    tx_element.value = (val < 0.01) ? val.toExponential() : val.toString();
+}
+var button_applySimulOp = document.getElementById("button_applySimulOp");
 
 setup();
 loop();
