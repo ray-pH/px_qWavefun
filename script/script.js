@@ -20,8 +20,6 @@ const so = {
 };
 // approximately dψ_re <= 2Δt/Δx^2 = 2Δt n^2
 // to make it stable set at most Δt < δψ/n^2
-// var qparticle = new QParticle(so.n, so.dt);
-// var qrenderer = new QRenderer(qparticle, canvas as HTMLCanvasElement, ro.verticalResolution);
 var qparticle;
 var qrenderer;
 function initSystem() {
@@ -89,6 +87,7 @@ var select_scene = document.getElementById("select_scene");
 select_scene.onchange = () => {
     let scene = parseInt(select_scene.value);
     let strScene = strScenes[scene];
+    lastValid_strScene = strScene;
     textarea_scene.value = strScene;
     let f = strScene_toFun(strScene);
     scene_set(qparticle, f, ro, qrenderer);

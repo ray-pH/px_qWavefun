@@ -97,6 +97,7 @@ var select_scene : HTMLSelectElement = document.getElementById("select_scene") a
 select_scene.onchange = () => {
     let scene = parseInt(select_scene.value);
     let strScene = strScenes[scene];
+    lastValid_strScene = strScene;
     textarea_scene.value = strScene;
     let f : scenefun = strScene_toFun(strScene);
     scene_set(qparticle, f, ro, qrenderer);
