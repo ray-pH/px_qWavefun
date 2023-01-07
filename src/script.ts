@@ -61,14 +61,32 @@ button_ppause.onclick = () => {
 }
 
 var textarea_scene : HTMLTextAreaElement = document.getElementById("textarea_scene") as HTMLTextAreaElement;
+var container_sceneInput = document.getElementById("container_sceneInput");
+var span_errorScene = document.getElementById("span_errorScene");
 var button_applyScene = document.getElementById("button_applyScene");
 button_applyScene.onclick = () => {
+    // let s = textarea_scene.value;
+    // let f : scenefun = strScene_toFun(s);
+    // scene_set(qparticle, f, ro, qrenderer);
+    // rewrite_txRO();
+
     let s = textarea_scene.value;
     let f : scenefun = strScene_toFun(s);
-    scene_set(qparticle, f, ro, qrenderer);
-    rewrite_txRO();
-    qrenderer.rescale(ro);
-    qrenderer.draw(ro);
+
+    let msg : string = ""; 
+    let bgcolor : string = "#D6D6D6";
+    try {
+        scene_set(qparticle, f, ro, qrenderer);
+        rewrite_txRO();
+        qrenderer.rescale(ro);
+        qrenderer.draw(ro);
+    } catch(e){
+        msg = e.toString();
+        bgcolor = "#D63333"
+    }
+
+    container_sceneInput.style.backgroundColor = bgcolor;
+    span_errorScene.innerHTML = msg;
 }
 
 var strScenes = [strScene_Parabola, strScene_Tunneling];
