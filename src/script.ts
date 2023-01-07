@@ -59,6 +59,15 @@ button_ppause.onclick = () => {
     paused = !paused;
     button_ppause.innerHTML = paused ? "play" : "pause";
 }
+var button_reset = document.getElementById("button_reset");
+button_reset.onclick = () => {
+    let s = textarea_scene.value;
+    let f : scenefun = strScene_toFun(s);
+    scene_set(qparticle, f, ro, qrenderer);
+    rewrite_txRO();
+    qrenderer.rescale(ro);
+    qrenderer.draw(ro);
+}
 
 var textarea_scene : HTMLTextAreaElement = document.getElementById("textarea_scene") as HTMLTextAreaElement;
 var container_sceneInput = document.getElementById("container_sceneInput");

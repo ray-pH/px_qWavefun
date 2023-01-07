@@ -50,6 +50,15 @@ button_ppause.onclick = () => {
     paused = !paused;
     button_ppause.innerHTML = paused ? "play" : "pause";
 };
+var button_reset = document.getElementById("button_reset");
+button_reset.onclick = () => {
+    let s = textarea_scene.value;
+    let f = strScene_toFun(s);
+    scene_set(qparticle, f, ro, qrenderer);
+    rewrite_txRO();
+    qrenderer.rescale(ro);
+    qrenderer.draw(ro);
+};
 var textarea_scene = document.getElementById("textarea_scene");
 var container_sceneInput = document.getElementById("container_sceneInput");
 var span_errorScene = document.getElementById("span_errorScene");
