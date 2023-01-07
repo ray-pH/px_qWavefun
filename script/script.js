@@ -1,7 +1,7 @@
 import { QParticle, QRenderer } from "./quantumMech.js";
 import { scene_set, strScene_toFun, strScene_Parabola, strScene_Tunneling } from "./scenes.js";
 var canvas = document.getElementById("canvas");
-// var lastValid_strScene : string = "";
+var lastValid_strScene = "";
 const ro = {
     showReal: true,
     showImag: true,
@@ -34,6 +34,7 @@ function setup() {
     let containerIds = ["container_sceneInput", "container_renderOption", "container_simulOption"];
     containerIds.forEach((id) => { document.getElementById(id).style.display = 'none'; });
     let initScene = strScene_Parabola;
+    lastValid_strScene = strScene_Parabola;
     scene_set(qparticle, strScene_toFun(initScene), ro, qrenderer);
     textarea_scene.value = initScene;
     qrenderer.rescale(ro);
@@ -53,8 +54,7 @@ button_ppause.onclick = () => {
 };
 var button_reset = document.getElementById("button_reset");
 button_reset.onclick = () => {
-    let s = textarea_scene.value;
-    let f = strScene_toFun(s);
+    let f = strScene_toFun(lastValid_strScene);
     scene_set(qparticle, f, ro, qrenderer);
     rewrite_txRO();
     qrenderer.rescale(ro);
@@ -79,6 +79,8 @@ button_applyScene.onclick = () => {
         msg = e.toString();
         bgcolor = "#D63333";
     }
+    if (msg == "")
+        lastValid_strScene = s;
     container_sceneInput.style.backgroundColor = bgcolor;
     span_errorScene.innerHTML = msg;
 };
@@ -163,8 +165,7 @@ button_applySimulOp.onclick = () => {
         so[comp] = parsed;
     }
     initSystem();
-    let s = textarea_scene.value;
-    let f = strScene_toFun(s);
+    let f = strScene_toFun(lastValid_strScene);
     scene_set(qparticle, f, ro, qrenderer);
     rewrite_txRO();
     qrenderer.rescale(ro);

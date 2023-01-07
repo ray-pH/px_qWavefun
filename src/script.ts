@@ -4,7 +4,7 @@ import {scene_set, scenefun, strScene_toFun, strScene_Parabola, strScene_Tunneli
 var canvas : HTMLElement | null = document.getElementById("canvas");
 
 
-// var lastValid_strScene : string = "";
+var lastValid_strScene : string = "";
 const ro : RenderOptions = {
     showReal : true,
     showImag : true,
@@ -40,6 +40,7 @@ function setup(){
     containerIds.forEach((id : string) => { document.getElementById(id).style.display = 'none'; })
 
     let initScene = strScene_Parabola;
+    lastValid_strScene = strScene_Parabola;
     scene_set(qparticle, strScene_toFun(initScene), ro, qrenderer);
     textarea_scene.value = initScene;
 
@@ -61,8 +62,7 @@ button_ppause.onclick = () => {
 }
 var button_reset = document.getElementById("button_reset");
 button_reset.onclick = () => {
-    let s = textarea_scene.value;
-    let f : scenefun = strScene_toFun(s);
+    let f : scenefun = strScene_toFun(lastValid_strScene);
     scene_set(qparticle, f, ro, qrenderer);
     rewrite_txRO();
     qrenderer.rescale(ro);
@@ -89,6 +89,7 @@ button_applyScene.onclick = () => {
         bgcolor = "#D63333"
     }
 
+    if (msg == "") lastValid_strScene = s;
     container_sceneInput.style.backgroundColor = bgcolor;
     span_errorScene.innerHTML = msg;
 }
@@ -179,8 +180,7 @@ button_applySimulOp.onclick = () => {
     }
     initSystem();
 
-    let s = textarea_scene.value;
-    let f : scenefun = strScene_toFun(s);
+    let f : scenefun = strScene_toFun(lastValid_strScene);
     scene_set(qparticle, f, ro, qrenderer);
     rewrite_txRO();
     qrenderer.rescale(ro);
