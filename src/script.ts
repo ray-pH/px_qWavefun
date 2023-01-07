@@ -31,7 +31,7 @@ function setup(){
     containerIds.forEach((id : string) => { document.getElementById(id).style.display = 'none'; })
 
     let initScene = strScene_Parabola;
-    scene_set(qparticle, strScene_toFun(initScene));
+    scene_set(qparticle, strScene_toFun(initScene), ro, qrenderer);
     textarea_scene.value = initScene;
 
     qrenderer.rescale(ro);
@@ -57,7 +57,8 @@ var button_applyScene = document.getElementById("button_applyScene");
 button_applyScene.onclick = () => {
     let s = textarea_scene.value;
     let f : scenefun = strScene_toFun(s);
-    scene_set(qparticle, f);
+    scene_set(qparticle, f, ro, qrenderer);
+    rewrite_txRO();
     qrenderer.rescale(ro);
     qrenderer.draw(ro);
 }
@@ -69,7 +70,8 @@ select_scene.onchange = () => {
     let strScene = strScenes[scene];
     textarea_scene.value = strScene;
     let f : scenefun = strScene_toFun(strScene);
-    scene_set(qparticle, f);
+    scene_set(qparticle, f, ro, qrenderer);
+    rewrite_txRO();
     qrenderer.rescale(ro);
     qrenderer.draw(ro);
 }
@@ -104,11 +106,19 @@ const tx_ROcomponent = {
     "tx_waveScale": "scaleWave",
     "tx_potScale" : "scalePotential",
 }
+
+function rewrite_txRO(){
+    for (let tx_id in tx_ROcomponent){
+        let comp = tx_ROcomponent[tx_id];
+        let tx_element : HTMLInputElement = document.getElementById(tx_id) as HTMLInputElement;
+        tx_element.value = ro[comp];
+    }
+};
+
 for (let tx_id in tx_ROcomponent){
     let comp = tx_ROcomponent[tx_id];
     let tx_element : HTMLInputElement = document.getElementById(tx_id) as HTMLInputElement;
     tx_element.value = ro[comp];
-
     tx_element.oninput = () => { 
         ro[comp] = parseFloat(tx_element.value); 
         qrenderer.rescale(ro);
