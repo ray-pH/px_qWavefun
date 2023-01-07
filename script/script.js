@@ -1,6 +1,7 @@
 import { QParticle, QRenderer } from "./quantumMech.js";
 import { scene_set, strScene_toFun, strScene_Parabola, strScene_Tunneling } from "./scenes.js";
 var canvas = document.getElementById("canvas");
+// var lastValid_strScene : string = "";
 const ro = {
     showReal: true,
     showImag: true,
@@ -64,10 +65,6 @@ var container_sceneInput = document.getElementById("container_sceneInput");
 var span_errorScene = document.getElementById("span_errorScene");
 var button_applyScene = document.getElementById("button_applyScene");
 button_applyScene.onclick = () => {
-    // let s = textarea_scene.value;
-    // let f : scenefun = strScene_toFun(s);
-    // scene_set(qparticle, f, ro, qrenderer);
-    // rewrite_txRO();
     let s = textarea_scene.value;
     let f = strScene_toFun(s);
     let msg = "";
@@ -156,5 +153,22 @@ for (let tx_id in tx_SOcomponent) {
     tx_element.value = (val < 0.01) ? val.toExponential() : val.toString();
 }
 var button_applySimulOp = document.getElementById("button_applySimulOp");
+button_applySimulOp.onclick = () => {
+    for (let tx_id in tx_SOcomponent) {
+        let comp = tx_SOcomponent[tx_id];
+        let tx_element = document.getElementById(tx_id);
+        let parsed = parseFloat(tx_element.value);
+        if (isNaN(parsed))
+            return;
+        so[comp] = parsed;
+    }
+    initSystem();
+    let s = textarea_scene.value;
+    let f = strScene_toFun(s);
+    scene_set(qparticle, f, ro, qrenderer);
+    rewrite_txRO();
+    qrenderer.rescale(ro);
+    qrenderer.draw(ro);
+};
 setup();
 loop();
