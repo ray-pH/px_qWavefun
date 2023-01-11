@@ -26,11 +26,35 @@ function initSystem() {
     qparticle = new QParticle(so.n, so.dt);
     qrenderer = new QRenderer(qparticle, canvas, ro.verticalResolution);
 }
+function readSceneFromURL() {
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    let urlstrScene = urlParams.get('scene');
+    if (urlstrScene == null)
+        return false;
+    let parsedstrScene = "";
+    try {
+        parsedstrScene = atob(decodeURIComponent(urlstrScene));
+    }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+    document.getElementById("select_scene").value = "2";
+    lastValid_strScene = parsedstrScene;
+    textarea_scene.value = parsedstrScene;
+    document.getElementById("button_moreScene").click();
+    document.getElementById("button_applyScene").click();
+    return true;
+}
 var paused = false;
 function setup() {
     initSystem();
     let containerIds = ["container_sceneInput", "container_renderOption", "container_simulOption", "container_sceneHelp"];
     containerIds.forEach((id) => { document.getElementById(id).style.display = 'none'; });
+    let success = readSceneFromURL();
+    if (success)
+        return;
     let initScene = strScene_Parabola;
     lastValid_strScene = strScene_Parabola;
     scene_set(qparticle, strScene_toFun(initScene), ro, qrenderer);
@@ -103,7 +127,7 @@ button_shareScene.onclick = () => {
     let strScene = textarea_scene.value;
     let strScene64 = btoa(strScene);
     span_shareScene.style.display = "grid";
-    input_shareScene.value = siteURI + "?scene=" + strScene64;
+    input_shareScene.value = siteURI + "?scene=" + encodeURIComponent(strScene64);
 };
 function setButtonShow(buttonId, containerId, sOpen, sClosed) {
     let button = document.getElementById(buttonId);
