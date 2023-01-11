@@ -77,7 +77,30 @@
                 <div class="hideable_container" id="container_sceneInput">
                     <textarea id="textarea_scene"></textarea>
                     <button id="button_applyScene">apply</button>
+                    <button id="button_helpScene">?</button>
                     <div id="span_errorScene"></div>
+                    <div id="container_sceneHelp">
+                        <br>
+                        Available variables:<br>
+                        <span class="descvar">n</span><span class="desctype"> (number) [read-only]</span>
+                        : number of grid in the simulation (N grid in Simul Options)
+                        <br><span class="descvar">realArr</span><span class="desctype"> (Float32Array)</span>
+                        : real value of the wavefunction
+                        <br><span class="descvar">imagArr</span><span class="desctype"> (Float32Array)</span>
+                        : imaginary valur of the wavefunction
+                        <br><span class="descvar">potentArr</span><span class="desctype"> (Float32Array)</span>
+                        : potential field (V) <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        *scale potential to about <span class="descvar">n²</span> for it to have noticeable effect
+                        <br><span class="descvar">normalize.wavepeak</span><span class="desctype"> (number)</span>
+                        : value of wavepeak to scale the wave peak<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        * value of 1.0 is the top of the canvas
+                        <br>
+                        <br>Render options:
+                        <br><span class="descvar">renderOpt.scalePotential</span><span class="desctype"> (number)</span>
+                        <br><span class="descvar">renderOpt.scaleWave</span><span class="desctype"> (number)</span>
+                    </div>
                 </div>
                 <br><hr>
                 <label for="button_moreRender">Render Options</label>
