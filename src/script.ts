@@ -92,7 +92,7 @@ button_applyScene.onclick = () => {
     span_errorScene.innerHTML = msg;
 }
 
-var strScenes = [strScene_Parabola, strScene_Tunneling];
+var strScenes = [strScene_Parabola, strScene_Tunneling, ''];
 var select_scene : HTMLSelectElement = document.getElementById("select_scene") as HTMLSelectElement;
 select_scene.onchange = () => {
     let scene = parseInt(select_scene.value);
@@ -104,6 +104,17 @@ select_scene.onchange = () => {
     rewrite_txRO();
     qrenderer.rescale(ro);
     qrenderer.draw(ro);
+}
+
+var button_shareScene : HTMLButtonElement = document.getElementById("button_shareScene") as HTMLButtonElement;
+var span_shareScene   : HTMLDivElement    = document.getElementById("span_shareScene") as HTMLDivElement;
+var input_shareScene  : HTMLInputElement  = document.getElementById("input_shareScene") as HTMLInputElement;
+button_shareScene.onclick = () => {
+    let siteURI    : string = window.location.href.split('?')[0];
+    let strScene   : string = textarea_scene.value;
+    let strScene64 : string = btoa(strScene);
+    span_shareScene.style.display = "grid";
+    input_shareScene.value = siteURI + "?scene=" + strScene64;
 }
 
 function setButtonShow(buttonId : string, containerId : string, sOpen : string, sClosed : string){

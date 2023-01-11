@@ -130,6 +130,13 @@ button:hover {
     font-weight: 600;
     letter-spacing: 1px;
 }
+
+#span_shareScene {
+    display: none;
+    grid-template-columns: auto auto;
+    margin-top: 10px;
+}
+
 /* #select_scene > option { */
 /*     font-family: "PixelUniCode"; */
 /*     font-size  : 16px; */

@@ -82,7 +82,7 @@ button_applyScene.onclick = () => {
     container_sceneInput.style.backgroundColor = bgcolor;
     span_errorScene.innerHTML = msg;
 };
-var strScenes = [strScene_Parabola, strScene_Tunneling];
+var strScenes = [strScene_Parabola, strScene_Tunneling, ''];
 var select_scene = document.getElementById("select_scene");
 select_scene.onchange = () => {
     let scene = parseInt(select_scene.value);
@@ -94,6 +94,16 @@ select_scene.onchange = () => {
     rewrite_txRO();
     qrenderer.rescale(ro);
     qrenderer.draw(ro);
+};
+var button_shareScene = document.getElementById("button_shareScene");
+var span_shareScene = document.getElementById("span_shareScene");
+var input_shareScene = document.getElementById("input_shareScene");
+button_shareScene.onclick = () => {
+    let siteURI = window.location.href.split('?')[0];
+    let strScene = textarea_scene.value;
+    let strScene64 = btoa(strScene);
+    span_shareScene.style.display = "grid";
+    input_shareScene.value = siteURI + "?scene=" + strScene64;
 };
 function setButtonShow(buttonId, containerId, sOpen, sClosed) {
     let button = document.getElementById(buttonId);
