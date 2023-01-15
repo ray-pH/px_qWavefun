@@ -57,4 +57,13 @@ for (let i = ifrom; i < ito; i++){
 }
 `
 
-export {scene_set, scenefun, strScene_toFun, strScene_Parabola, strScene_Tunneling};
+interface SceneStr {
+    [key : string] : string;
+}
+const strScenes : SceneStr = {
+    'Parabolic Potential' : strScene_Parabola,
+    'Quantum Tunneling'   : strScene_Tunneling,
+    'Custom'              : '',
+}
+
+export {scene_set, scenefun, strScene_toFun, SceneStr, strScenes};

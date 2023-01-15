@@ -47,4 +47,9 @@ for (let i = ifrom; i < ito; i++){
     potent[i] = n * n * 0.05;
 }
 `;
-export { scene_set, strScene_toFun, strScene_Parabola, strScene_Tunneling };
+const strScenes = {
+    'Parabolic Potential': strScene_Parabola,
+    'Quantum Tunneling': strScene_Tunneling,
+    'Custom': '',
+};
+export { scene_set, strScene_toFun, strScenes };

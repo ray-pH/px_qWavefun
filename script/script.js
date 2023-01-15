@@ -1,5 +1,5 @@
 import { QParticle, QRenderer } from "./quantumMech.js";
-import { scene_set, strScene_toFun, strScene_Parabola, strScene_Tunneling } from "./scenes.js";
+import { scene_set, strScene_toFun, strScenes } from "./scenes.js";
 var canvas = document.getElementById("canvas");
 var lastValid_strScene = "";
 const ro = {
@@ -40,7 +40,9 @@ function readSceneFromURL() {
         console.log(e);
         return false;
     }
-    document.getElementById("select_scene").value = "2";
+    document.getElementById("select_scene").value =
+        (Object.keys(strScenes).length - 1).toString();
+    ;
     lastValid_strScene = parsedstrScene;
     textarea_scene.value = parsedstrScene;
     document.getElementById("button_moreScene").click();
@@ -52,11 +54,16 @@ function setup() {
     initSystem();
     let containerIds = ["container_sceneInput", "container_renderOption", "container_simulOption", "container_sceneHelp"];
     containerIds.forEach((id) => { document.getElementById(id).style.display = 'none'; });
+    let select_scene = document.getElementById('select_scene');
+    let strScenesKeys = Object.keys(strScenes);
+    for (let id in strScenesKeys) {
+        select_scene.add(new Option(strScenesKeys[id], id));
+    }
     let success = readSceneFromURL();
     if (success)
         return;
-    let initScene = strScene_Parabola;
-    lastValid_strScene = strScene_Parabola;
+    let initScene = strScenes[strScenesKeys[0]];
+    lastValid_strScene = initScene;
     scene_set(qparticle, strScene_toFun(initScene), ro, qrenderer);
     textarea_scene.value = initScene;
     qrenderer.rescale(ro);
@@ -106,11 +113,10 @@ button_applyScene.onclick = () => {
     container_sceneInput.style.backgroundColor = bgcolor;
     span_errorScene.innerHTML = msg;
 };
-var strScenes = [strScene_Parabola, strScene_Tunneling, ''];
 var select_scene = document.getElementById("select_scene");
 select_scene.onchange = () => {
     let scene = parseInt(select_scene.value);
-    let strScene = strScenes[scene];
+    let strScene = strScenes[Object.keys(strScenes)[scene]];
     lastValid_strScene = strScene;
     textarea_scene.value = strScene;
     let f = strScene_toFun(strScene);
