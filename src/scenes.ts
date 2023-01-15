@@ -17,10 +17,8 @@ function strScene_toFun(s : string) : scenefun {
     return f;
 }
 
-let strScene_Parabola : string = 
+let ss_Parabola : string = 
 `let energy = 40;
-normalize.wavepeak = 0.8;
-renderOpt.scalePotential = 8e-5;
 
 for (let i = 0; i < n; i++) {
     let x = i / n;
@@ -34,12 +32,13 @@ for (let i = 0; i < n; i++){
     let x = i/n;
     potent[i] = n * n * (x-0.5) * (x-0.5);
 }
+
+normalize.wavepeak = 0.8;
+renderOpt.scalePotential = 8e-5;
 `
 
-let strScene_Tunneling : string = 
+let ss_Tunneling : string = 
 `let energy = 60;
-normalize.wavepeak = 1.0;
-renderOpt.scalePotential = 1e-3;
 
 for (let i = 0; i < n; i++) {
     let x = i / n;
@@ -55,14 +54,74 @@ potent.fill(0.0);
 for (let i = ifrom; i < ito; i++){
     potent[i] = n * n * 0.05;
 }
+
+normalize.wavepeak = 1.0;
+renderOpt.scalePotential = 1e-3;
+`
+
+const ss_TwoParticle : string = 
+`let energy = 40;
+
+for (let i = 0; i < n; i++) {
+    let x = i / n;
+    let y1 = -(x - 0.2) * (x - 0.4);
+    let env1 = Math.max(y1, 0);
+    
+    let y2 = -(x - 0.9) * (x - 0.7);
+    let env2 = Math.max(y2,0);
+
+    let r1 = env1 * Math.sin(energy * -x);
+    let i1 = env1 * Math.cos(energy * -x);
+    let r2 = env2 * Math.sin(energy * x);
+    let i2 = env2 * Math.cos(energy * x);
+
+    real[i] = r1+r2;
+    imag[i] = i1+i2;
+}
+
+
+for (let i = 0; i < n; i++){
+    let x = i/n;
+    potent[i] = n * n * (x-0.5) * (x-0.5);
+}
+
+normalize.wavepeak = 0.8;
+renderOpt.scalePotential = 8e-5;
+`
+
+const ss_boxBasis : string = 
+` // Increase step per Frame if movement is too slow
+let L = 0.8;
+let n_state = 3;
+
+let kn = n_state * Math.PI / L;
+for (let i = 0; i < n; i++) {
+    let x = i / n;
+    
+    real[i] = Math.sin(kn * (x - 0.5 + L/2));
+    imag[i] = 0;
+}
+
+potent.fill(0.0);
+for (let i = 0; i < Math.round((1.0-L)/2*n); i++){
+    potent[i] = n*n;
+    potent[potent.length-1-i] = n*n;
+    real[i] = 0; real[potent.length-1-i] = 0;
+    imag[i] = 0; imag[potent.length-1-i] = 0;
+}
+
+normalize.wavepeak = 0.8;
+renderOpt.scalePotential = 8e-5;
 `
 
 interface SceneStr {
     [key : string] : string;
 }
 const strScenes : SceneStr = {
-    'Parabolic Potential' : strScene_Parabola,
-    'Quantum Tunneling'   : strScene_Tunneling,
+    'Parabolic Potential' : ss_Parabola,
+    'Quantum Tunneling'   : ss_Tunneling,
+    'TwoParticle'         : ss_TwoParticle,
+    'Basis State in Potential Well' : ss_boxBasis,
     'Custom'              : '',
 }
 
